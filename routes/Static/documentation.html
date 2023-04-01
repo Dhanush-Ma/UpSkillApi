@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Documentation</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #121212;
+        color: #f5f5f5;
+        font-family: "Georgia";
+        padding: 0 0 2rem 0;
+      }
+
+      h1 {
+        font-size: 4rem;
+        margin: 2rem 0;
+        text-align: center;
+        background: rgb(204, 43, 94);
+        background: linear-gradient(
+          90deg,
+          rgba(204, 43, 94, 1) 1%,
+          rgba(117, 58, 136, 1) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .routes {
+        max-width: 650px;
+        width: 650px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .route-container {
+        width: 100%;
+        border: 1px solid #f1f1f1;
+        border-radius: 10px;
+      }
+
+      .route {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 1rem;
+        cursor: pointer;
+        margin: 0 auto;
+        border-radius: 10px;
+        transition: all 0.5s linear;
+      }
+
+      .active,
+      .route:hover {
+        background: rgb(204, 43, 94);
+        background: linear-gradient(
+          90deg,
+          rgba(204, 43, 94, 1) 1%,
+          rgba(117, 58, 136, 1) 100%
+        );
+
+      }
+
+      .method {
+        background-color: #24a0ed;
+        padding: 1rem 1.5rem;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border: 1px solid #24a0ed;
+      }
+
+      .url {
+        width: 100%;
+        margin-left: 10px;
+        font-size: 1.2rem;
+      }
+
+      .route-desc-container {
+        display: none;
+        overflow: hidden;
+        padding: 1rem;
+        
+      }
+
+      .route-desc {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+
+      .p {
+        font-size: x-large;
+      }
+
+      .info {
+        margin-bottom: 0.7rem;
+      }
+
+      .info span {
+        color: red;
+        font-weight: bold;
+      }
+
+      .response-container {
+        margin-top: 1rem;
+      }
+      .response-code {
+        width: max-content;
+        padding: 0.5rem;
+        color: #121212;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+      }
+      .response {
+        margin-left: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+      .ok {
+        background-color: #14f549;
+      }
+      .error {
+        background-color: #f32013;
+      }
+
+      footer {
+        margin-top: 2.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>UpSkill API Documentation</h1>
+    <main>
+      <div class="routes">
+        <div class="route-container">
+          <div class="route">
+            <div class="method">
+              <p>GET</p>
+            </div>
+            <div class="url">
+              <p>${baseURL}/v1/list</p>
+            </div>
+            <i class="fa-solid fa-angle-down"></i>
+          </div>
+          <div class="route-desc-container">
+            <p class="route-desc">List of supported programming languages.</p>
+            <p class="p">Sample Responses</p>
+            <div class="response-container">
+              <p class="response-code ok">200 OK</p>
+              <pre id="res1" class="response"></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="route-container">
+          <div class="route">
+            <div class="method">
+              <p>GET</p>
+            </div>
+            <div class="url">
+              <p>${baseURL}/v1/video?language={LANGUAGE}</p>
+            </div>
+            <i class="fa-solid fa-angle-down"></i>
+          </div>
+          <div class="route-desc-container">
+            <p class="route-desc">
+              List of popular videos for the requested language.
+            </p>
+            <p class="info">paramter: language <span>*required</span></p>
+            <p class="p">Sample Responses</p>
+            <div class="response-container">
+              <p class="response-code ok">200 OK</p>
+
+              <pre id="res2" class="response"></pre>
+            </div>
+            <div class="response-container">
+              <p class="response-code error">404 BAD REQUEST</p>
+              <pre id="res3" class="response"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>&#169; Copyright, 2023 All Rights Reserved</footer>
+    <script>
+      let routeBtn = document.getElementsByClassName("route");
+
+      for (let i = 0; i < routeBtn.length; i++) {
+        routeBtn[i].addEventListener("click", function () {
+          console.log("ok");
+          this.classList.toggle("active");
+
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
+
+      const brace = {
+        brace: 0,
+      };
+
+      let json1 = { languges: [{ language: "string", logo: "string(url)" }] };
+      json1 = JSON.stringify(json1);
+
+      let json2 = {
+        status: 200,
+        language: "java",
+        data: [
+          { type: "single", videoIds: ["..."] },
+          { type: "single", videoIds: ["..."] },
+          { type: "single", videoIds: ["..."] },
+          { type: "playlist", videoIds: ["...", "..."] },
+        ],
+      };
+      json2 = JSON.stringify(json2);
+
+      let json3 = {
+        status: "Bad request",
+        code: 400,
+        reason: "Thespecified language is not found.",
+      };
+      json3 = JSON.stringify(json3);
+
+      const json1html = json1.replace(
+        /({|}[,]*|[^{}:]+:[^{}:,]*[,{]*)/g,
+        (m, p1) => {
+          const returnFunction = () =>
+            `<div style="text-indent: ${brace["brace"] * 20}px;">${p1}</div>`;
+          let returnString = 0;
+          if (p1.lastIndexOf("{") === p1.length - 1) {
+            returnString = returnFunction();
+            brace["brace"] += 1;
+          } else if (p1.indexOf("}") === 0) {
+            brace["brace"] -= 1;
+            returnString = returnFunction();
+          } else {
+            returnString = returnFunction();
+          }
+          return returnString;
+        }
+      );
+
+      const json2html = json2.replace(
+        /({|}[,]*|[^{}:]+:[^{}:,]*[,{]*)/g,
+        (m, p1) => {
+          const returnFunction = () =>
+            `<div style="text-indent: ${brace["brace"] * 20}px;">${p1}</div>`;
+          let returnString = 0;
+          if (p1.lastIndexOf("{") === p1.length - 1) {
+            returnString = returnFunction();
+            brace["brace"] += 1;
+          } else if (p1.indexOf("}") === 0) {
+            brace["brace"] -= 1;
+            returnString = returnFunction();
+          } else {
+            returnString = returnFunction();
+          }
+          return returnString;
+        }
+      );
+
+      const json3html = json3.replace(
+        /({|}[,]*|[^{}:]+:[^{}:,]*[,{]*)/g,
+        (m, p1) => {
+          const returnFunction = () =>
+            `<div style="text-indent: ${brace["brace"] * 20}px;">${p1}</div>`;
+          let returnString = 0;
+          if (p1.lastIndexOf("{") === p1.length - 1) {
+            returnString = returnFunction();
+            brace["brace"] += 1;
+          } else if (p1.indexOf("}") === 0) {
+            brace["brace"] -= 1;
+            returnString = returnFunction();
+          } else {
+            returnString = returnFunction();
+          }
+          return returnString;
+        }
+      );
+
+      document.querySelector("#res1").innerHTML = json1html;
+      document.querySelector("#res2").innerHTML = json2html;
+      document.querySelector("#res3").innerHTML = json3html;
+    </script>
+  </body>
+</html>
